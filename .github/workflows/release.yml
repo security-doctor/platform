@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency: release-${{ github.ref }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # A protected environment with required reviewers. Publishing is the highest-value
+    # target in this repository (PRD §13.4) — a human approves every release.
+    environment: npm-publish
+    permissions:
+      contents: write      # changesets opens and updates the version PR
+      pull-requests: write
+      id-token: write      # REQUIRED for npm provenance (OIDC)
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@d9184bf108216479bc5a137cc391f4d7b14c870b # v6.1.0
+
+      # Node 22, not 20: npm trusted publishing (OIDC) requires Node >= 22.14 and
+      # npm >= 11.5.1. CI still tests on 20, our minimum supported version.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+          # Writes an .npmrc that reads NODE_AUTH_TOKEN, so `changeset publish` can auth.
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm check:all
+
+      # NOTE: changesets/action v2 renamed the v1 inputs:
+      #   publish -> publish-script, version -> version-script,
+      #   and GITHUB_TOKEN moved from env to the github-token input.
+      # Using the v1 names here silently does nothing.
+      - uses: changesets/action@66d7d1ddafddf1ef45f98ee51a7496f9cdadb2f4 # v2.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          publish-script: pnpm release
+          version-script: pnpm version-packages
+        env:
+          NPM_CONFIG_PROVENANCE: 'true'
+          # Needed for the FIRST publish only. Once both packages exist on npm,
+          # configure a trusted publisher on each (npmjs.com -> package -> Settings ->
+          # Trusted Publisher -> GitHub Actions, workflow `release.yml`), then delete
+          # this line AND the NPM_TOKEN secret. OIDC replaces it and still generates
+          # provenance. A release pipeline holding no npm credentials is the correct
+          # end state for a security vendor (PRD §13.4: token theft).
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

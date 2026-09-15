@@ -1,0 +1,60 @@
+{
+  "name": "@security-doctor/finding-model",
+  "version": "0.0.0",
+  "description": "Canonical security Finding model: severity, confidence, fingerprinting, lifecycle and SARIF export. Zero runtime dependencies.",
+  "license": "Apache-2.0",
+  "author": "Security Doctor",
+  "homepage": "https://github.com/security-doctor/platform/tree/main/packages/finding-model#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/security-doctor/platform.git",
+    "directory": "packages/finding-model"
+  },
+  "bugs": {
+    "url": "https://github.com/security-doctor/platform/issues"
+  },
+  "keywords": [
+    "security",
+    "appsec",
+    "sast",
+    "finding",
+    "sarif",
+    "cwe",
+    "owasp",
+    "severity",
+    "fingerprint"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

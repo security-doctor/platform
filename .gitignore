@@ -1,0 +1,62 @@
+# ── build + dependencies ────────────────────────────────────────────────
+node_modules/
+dist/
+coverage/
+.turbo/
+*.tsbuildinfo
+*.tgz
+
+# ── framework build output (security-lab apps arrive in week 2) ──────────
+.next/
+out/
+build/
+.vercel/
+
+# ── secrets and local environment ───────────────────────────────────────
+# NOTE: .npmrc IS committed — it carries ignore-scripts and provenance settings,
+# never credentials. A repo-invariant test fails the build if an _authToken line
+# ever appears in it. See tools/dep-graph-check/src/__tests__/repo-invariants.test.ts
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!packages/**/fixtures/**/*.key
+
+# ── Security Doctor local state (PRD §14.2) ─────────────────────────────
+# Ephemeral scan output, regenerated on every run.
+.security-doctor/last-scan.json
+.security-doctor/cache/
+# Runtime evidence: may contain hashed subject identifiers.
+.security/evidence.ndjson
+#
+# Deliberately NOT ignored — these are reviewable artifacts and belong in PRs:
+#   .security-doctor/baseline.json          accepted debt, must be visible in review
+#   .security-doctor/suppressions.yml       reasons and expiries, must be reviewable
+#   .security-doctor/authorization.yml      target attestations, a human artifact
+#   .security-doctor/verifications/*.json   proof that a fix worked — the evidence
+#                                           trail an auditor asks for (PRD §14.2)
+
+# ── internal, must never be published ───────────────────────────────────
+# This repository is public. The PRD is the commercial strategy (ICP, pricing
+# direction, risk register, hiring). It stays on disk and in the Claude project;
+# contributors get docs/architecture.md instead.
+docs/PRD.md
+
+# Working files from the assistant / downloaded archives — not part of the repo.
+Claude outputs/
+PLACE-THESE.txt
+*.zip
+
+# ── editors and operating systems ───────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.swp
+*~
+
+# ── logs ────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+pnpm-debug.log*

@@ -1,0 +1,11 @@
+# Everything needs a review.
+*                               @FreddyDezmal
+
+# Highest-criticality code in the repository. Two of these need extra care:
+# the verification safety gate (it sends requests at real systems) and the SDK
+# (it runs in customer production). See PRD §13.
+/packages/verification-engine/  @FreddyDezmal
+/packages/security-core/        @FreddyDezmal
+/.github/workflows/             @FreddyDezmal
+/.changeset/                    @FreddyDezmal
+/SECURITY.md                    @FreddyDezmal
