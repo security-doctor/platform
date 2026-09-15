@@ -1,6 +1,6 @@
 {
   "name": "@security-doctor/finding-model",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Canonical security Finding model: severity, confidence, fingerprinting, lifecycle and SARIF export. Zero runtime dependencies.",
   "license": "Apache-2.0",
   "author": "Security Doctor",

@@ -1,6 +1,6 @@
 {
   "name": "@security-doctor/evidence-schema",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Runtime security-evidence contract emitted by Security Core and consumed by the Verification Engine. Zero runtime dependencies.",
   "license": "Apache-2.0",
   "author": "Security Doctor",
