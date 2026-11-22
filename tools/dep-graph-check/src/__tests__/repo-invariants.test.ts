@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -94,5 +95,31 @@ describe('gitignore covers what it must', () => {
     ]) {
       expect(lines).not.toContain(artifact);
     }
+  });
+});
+
+describe('no file is both ignored and tracked', () => {
+  /**
+   * The footgun this exists for: .gitignore has NO effect on a file git is already
+   * tracking. Adding `docs/PRD.md` to .gitignore after it had been committed changed
+   * nothing — `git add -A` kept staging it and it survived a history rewrite.
+   *
+   * `git ls-files -i -c --exclude-standard` lists exactly that contradiction: files
+   * matching an ignore rule that are nonetheless tracked. It should always be empty.
+   * The fix is always `git rm --cached <path>`, never another .gitignore line.
+   */
+  it('reports nothing from `git ls-files -i -c --exclude-standard`', () => {
+    let output: string;
+    try {
+      output = execFileSync('git', ['ls-files', '-i', '-c', '--exclude-standard'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      });
+    } catch {
+      return; // not a git checkout (fresh tarball, some CI contexts) — nothing to assert
+    }
+    const tracked = output.split('\n').map((l) => l.trim()).filter(Boolean);
+    expect(tracked).toEqual([]);
   });
 });
