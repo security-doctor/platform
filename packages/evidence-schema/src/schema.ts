@@ -1,9 +1,20 @@
-/** JSON Schema (draft 2020-12) for the evidence stream. Published so third parties
- *  and the future platform can validate without reading our TypeScript. */
+/**
+ * JSON Schema (draft 2020-12) for the evidence stream. Published so third parties and the
+ * future platform can validate without reading our TypeScript.
+ *
+ * The `$id` values are PERMANENT IDENTIFIERS. Deliberately they do not point at a
+ * registrable domain: a domain that lapses can be re-registered by anyone, who would then
+ * control a URL that our published packages point at. For a security product that is a
+ * supply-chain problem, not a cosmetic one. GitHub Pages under the org has no renewal to
+ * forget.
+ *
+ * Changing an `$id` is a breaking change for anyone validating against it. The values are
+ * pinned by test; bump the trailing number and publish a new schema instead of editing one.
+ */
 
 export const evidenceRecordJsonSchema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
-  $id: 'https://security-doctor.dev/schemas/evidence-record-1.json',
+  $id: 'https://security-doctor.github.io/schemas/evidence-record-1.json',
   title: 'EvidenceRecord',
   type: 'object',
   required: ['v', 'ts', 'correlationId', 'method', 'routePattern', 'decisions', 'status', 'durationMs'],
@@ -57,7 +68,7 @@ export const evidenceRecordJsonSchema = {
 
 export const bootRecordJsonSchema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
-  $id: 'https://security-doctor.dev/schemas/evidence-boot-1.json',
+  $id: 'https://security-doctor.github.io/schemas/evidence-boot-1.json',
   title: 'BootRecord',
   type: 'object',
   required: ['v', 'kind', 'ts', 'sdkVersion', 'defaultsPreset', 'controls', 'nodeEnv', 'runTag'],

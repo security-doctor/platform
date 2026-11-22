@@ -52,6 +52,20 @@ describe('evidence-schema', () => {
     expect(isBootRecord(record)).toBe(false);
   });
 
+  it('pins the published $id values', () => {
+    // These are permanent identifiers. Anyone validating against a published schema
+    // resolves it by this exact string, so a change here is a breaking change — and must
+    // be a new numbered schema, not an edit. They point at GitHub Pages rather than a
+    // registrable domain on purpose: there is no renewal to miss, so the URL can never be
+    // taken over by someone else. See the comment in schema.ts.
+    expect(evidenceRecordJsonSchema.$id).toBe(
+      'https://security-doctor.github.io/schemas/evidence-record-1.json',
+    );
+    expect(bootRecordJsonSchema.$id).toBe(
+      'https://security-doctor.github.io/schemas/evidence-boot-1.json',
+    );
+  });
+
   it('forbids additional properties in the published schema', () => {
     expect(evidenceRecordJsonSchema.additionalProperties).toBe(false);
     expect(bootRecordJsonSchema.additionalProperties).toBe(false);

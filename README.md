@@ -53,7 +53,8 @@ pnpm check:all          # deps check → typecheck → lint → test → build
 | GitHub org | `security-doctor` | confirmed available at time of writing |
 | CLI binary | `security-doctor` | the `bin` name, independent of the package name |
 | CLI package | `@security-doctor/cli` | `npx @security-doctor/cli scan` |
-| Domain | `security-doctor.dev` | **unconfirmed — check before first publish** |
+| Schema `$id` base | `security-doctor.github.io/schemas/` | no renewal to forget |
+| Domain | `security-doctor.dev` | optional — for the site and email only |
 
 Three things to settle before the first `npm publish`:
 
@@ -62,9 +63,16 @@ Three things to settle before the first `npm publish`:
   timeframes" counts as squatting. `@security-doctor/finding-model@0.0.1` is a genuine
   package and can ship today. Never publish placeholder or typosquat packages — that is
   what npm removes accounts for.
-- **The JSON Schema `$id` URLs are published identifiers.** They point at
-  `security-doctor.dev`. Once anything validates against them, changing them is a
-  breaking change. Own the domain first.
+- **The JSON Schema `$id` URLs are published identifiers**, and they deliberately point
+  at `security-doctor.github.io`, not at a registrable domain. A domain that lapses can be
+  re-registered by anyone, who would then control a URL our published packages point at —
+  a supply-chain problem, not a cosmetic one. The values are pinned by test; to change one,
+  publish a new numbered schema rather than editing the existing `$id`.
+
+  To make them resolve, create a repo named `security-doctor.github.io` in the org with a
+  `schemas/` folder containing the JSON files. The identifiers are stable either way —
+  JSON Schema does not require an `$id` to be dereferenceable — but resolving is better
+  manners for anyone integrating.
 - **The unscoped `security-doctor` package name is taken** by an unrelated solo project
   (`nkd52`, ~26 downloads/month). So PRD §15.1's `npx security-doctor scan` is currently
   `npx @security-doctor/cli scan`. A polite transfer request is worth one email — npm
