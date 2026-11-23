@@ -1,0 +1,20 @@
+# Normalise line endings in the repository to LF, regardless of contributor OS.
+#
+# Without this, a Windows checkout can rewrite whole files to CRLF and produce diffs
+# with equal insertion and deletion counts and zero actual content change — which is
+# exactly what happened on 2026-11-23 and cost an hour of "what changed?".
+#
+# `text=auto eol=lf` means: git decides what is text, stores LF, and checks out LF
+# everywhere. Modern editors on Windows handle LF fine.
+* text=auto eol=lf
+
+# Generated and lock files: stored LF, never diffed by eye.
+pnpm-lock.yaml  -diff linguist-generated
+*.md            text eol=lf diff=markdown
+
+# Binary, never touched.
+*.png  binary
+*.jpg  binary
+*.ico  binary
+*.woff binary
+*.woff2 binary
