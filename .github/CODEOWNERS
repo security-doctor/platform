@@ -1,11 +1,26 @@
-# Everything needs a review.
-*                               @FreddyDezmal
+# Code owners must have WRITE access to this repository. A code owner with read or
+# triage access is silently not assigned, and GitHub's linter reports
+# "Unknown owner: make sure @user exists and has write access".
+#
+# Multiple owners on a line is an OR, not an AND: an approval from ANY of them
+# satisfies a "require review from Code Owners" rule. Listing both of us is what makes
+# that rule satisfiable at all — a PR author cannot approve their own PR, so a path
+# owned solely by its author could never clear code-owner review.
+#
+# The two-person rule comes from branch protection ("require approvals: 1"), not from
+# this file.
 
-# Highest-criticality code in the repository. Two of these need extra care:
-# the verification safety gate (it sends requests at real systems) and the SDK
-# (it runs in customer production). See PRD §13.
-/packages/verification-engine/  @FreddyDezmal
-/packages/security-core/        @FreddyDezmal
-/.github/workflows/             @FreddyDezmal
-/.changeset/                    @FreddyDezmal
-/SECURITY.md                    @FreddyDezmal
+*                               @FreddyDezmal @Hanrekoen
+
+# Highest-criticality paths. Both own them so either can review the other's work. The
+# per-path entries document why these need care, and become real narrowing when a third
+# person joins.
+#
+# verification-engine sends requests at live systems.
+# security-core runs inside customers' production request paths.
+# workflows are the release pipeline — the highest-value target in this repo.
+/packages/verification-engine/  @FreddyDezmal @Hanrekoen
+/packages/security-core/        @FreddyDezmal @Hanrekoen
+/.github/workflows/             @FreddyDezmal @Hanrekoen
+/.changeset/                    @FreddyDezmal @Hanrekoen
+/SECURITY.md                    @FreddyDezmal @Hanrekoen

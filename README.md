@@ -5,8 +5,9 @@
 Application security for TypeScript/Node web applications that **confirms vulnerabilities
 and verifies fixes**, instead of handing you a list of maybes.
 
-Start with [`docs/architecture.md`](docs/architecture.md) — what the system is, how the
-pieces fit, and the invariants CI enforces.
+**New here?** Read [`docs/updates.md`](docs/updates.md) first — current state, settled
+decisions, and the traps we have already hit. Then
+[`docs/architecture.md`](docs/architecture.md) for how the system is designed.
 
 ## The loop
 
